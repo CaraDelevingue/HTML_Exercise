@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>文本分析工具</title>
+<style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+    }
+
+    .container {
+        display: flex;
+        flex: 1;
+    }
+
+    .history-panel {
+        width: 33.33%; /* 占据1/3宽度 */
+        background-color: #f4f4f4;
+        border-right: 1px solid #ddd;
+        overflow-y: auto;
+    }
+
+    .history-record {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .history-record:hover {
+        background-color: #e0e0e0;
+    }
+
+    .task-panel {
+        width: 66.67%; /* 占据2/3宽度 */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .output-area, .input-area {
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .output-area {
+        flex: 1;
+        overflow-y: auto;
+        background-color: #fff;
+    }
+
+    .input-area {
+        background-color: #f9f9f9;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    .analysis-buttons {
+        margin-bottom: 15px;
+    }
+    /* 可滚动容器 */
+    .result-scroll-container {
+      max-height: 400px; /* 固定高度，超出就滚动 */
+      overflow-y: auto;  /* 垂直滚动条 */
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      gap: 15px; /* 每个回答之间的间距 */
+    }
+
+    /* 每个回答块 */
+    .result-item {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start; /* 顶部对齐 */
+      gap: 10px;
+      padding: 12px;
+      background-color: white;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    /* 内容区域（左侧） */
+    .result-content {
+      flex: 1;
+    }
+
+    /* 左侧标签 */
+    .result-label {
+      font-weight: bold;
+      color: #333;
+      white-space: nowrap; /* 防止换行 */
+      min-width: 80px;
+      padding-top: 4px; /* 垂直居中对齐文本 */
+    }
+
+    /* 右侧内容区 —— 关键：自适应高度 */
+    .result-text {
+      flex: 1;
+      line-height: 1.6;
+      color: #555;
+      font-size: 14px;
+      word-wrap: break-word; /* 长单词/链接也能换行 */
+      /* 不设固定高度，让内容自动撑开 */
+    }
+
+    /* 复制按钮：小巧、右对齐 */
+.copy-btn {
+  margin-top: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-start; /* 顶部对齐 */
+}
+
+.copy-btn:hover {
+  background-color: #218838;
+}
+
+/* 可选：小屏幕下按钮在内容下方 */
+@media (max-width: 600px) {
+  .result-item {
+    flex-direction: column;
+  }
+
+  .copy-btn {
+    align-self: flex-end;
+    margin-top: 8px;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    文本分析工具
+</header>
+
+<div class="container">
+    <!-- 左侧历史记录面板 -->
+    <div class="history-panel">
+        <div class="history-record">• 2025-08-27 分析: "今天的天气..."</div>
+        <div class="history-record">• 2025-08-26 分析: "这份报告..."</div>
+        <div class="history-record">• 2025-08-25 分析: "会议纪要..."</div>
+        <!-- 可滚动添加更多历史记录 -->
+    </div>
+
+    <!-- 右侧任务面板 -->
+    <div class="task-panel">
+        <!-- 输出区域 - 保留原有类名，只改内容 -->
+        <div class="output-area">
+          <!-- 可滚动的回答容器 -->
+          <div class="result-scroll-container">
+                <!-- 回答 1 -->
+                <div class="result-item">
+                  <div class="result-content">
+                    <span class="result-label">分析结果:</span>
+                    <span class="result-text">
+                      这是一段较短的分析结果，用于测试布局是否正常。
+                    </span>
+                  </div>
+                  <button class="copy-btn" onclick="copyThis(this)">复制</button>
+                </div>
+
+                <!-- 回答 2 -->
+                <div class="result-item">
+                  <div class="result-content">
+                    <span class="result-label">分析结果:</span>
+                    <span class="result-text">
+                      这是一段非常长的分析结果。它包含了大量文本，用于测试当内容很多时，容器是否能正确换行并自动撑高。比如：自然语言处理模型在分析用户输入时，会提取关键词、情感倾向、主题分类等信息。本系统基于BERT模型，准确率达到95%以上。支持多语言、多领域分析。未来可扩展为智能客服、舆情监控等场景。
+                    </span>
+                  </div>
+                  <button class="copy-btn" onclick="copyThis(this)">复制</button>
+                </div>
+
+                <!-- 回答 3 -->
+                <div class="result-item">
+                  <div class="result-content">
+                    <span class="result-label">分析结果:</span>
+                    <span class="result-text">
+                      另一个分析结果示例。支持包含 URL 链接：https://example.com/very-long-path-for-testing-word-break
+                      以及代码片段：function hello() { console.log("自适应高度"); }
+                    </span>
+                  </div>
+                  <button class="copy-btn" onclick="copyThis(this)">复制</button>
+                </div>
+          </div>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="input-area">
+            <!-- 新增的分析按钮 -->
+            <div class="analysis-buttons">
+                <button onclick="selectAnalysis('sentiment')">情感分析</button>
+                <button onclick="selectAnalysis('keywords')">关键字提取</button>
+            </div>
+            
+            <textarea id="textInput" placeholder="在此输入或粘贴文本..."></textarea>
+            <br>
+            <input type="file" id="fileInput">
+            <span id="fileName">当前文件: 无</span>
+            <br><br>
+            <button onclick="startAnalysis()">开始分析</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedAnalysis = 'sentiment'; // 默认选择情感分析
+
+    function selectAnalysis(type) {
+        selectedAnalysis = type;
+        // 可以在这里添加视觉反馈，比如高亮选中的按钮
+        console.log('选择的分析类型:', type);
+    }
+
+    function startAnalysis() {
+        // 模拟分析过程
+        const text = document.getElementById('textInput').value;
+        const result = document.getElementById('result');
+        
+        if (selectedAnalysis === 'sentiment') {
+            result.innerText = `情感分析结果: 检测到您输入的内容 "${text}" 倾向于积极情感。`;
+        } else {
+            result.innerText = `关键字提取结果: 从 "${text}" 中提取的关键字包括: 天气, 晴朗, 温暖。`;
+        }
+    }
+
+    function copyResult() {
+        const result = document.getElementById('result').innerText;
+        navigator.clipboard.writeText(result).then(() => {
+            alert("结果已复制到剪贴板！");
+        }).catch(err => {
+            console.error('未能复制文本: ', err);
+        });
+    }
+
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            document.getElementById('fileName').innerText = '当前文件: ' + file.name;
+        } else {
+            document.getElementById('fileName').innerText = '当前文件: 无';
+        }
+    });
+</script>
+
+</body>
+</html>
