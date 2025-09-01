@@ -1,20 +1,12 @@
 <script setup>
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-})
-
 const emit = defineEmits(['click'])
 
 function handleclick(event) {
-  if (props.disabled) return
   emit('click', event)
 }
 </script>
 <template>
-  <button @click="handleclick" :disabled="disabled" class="my-btn">
+  <button @click="handleclick" class="my-btn">
     <slot>关键字提取</slot>
   </button>
 </template>

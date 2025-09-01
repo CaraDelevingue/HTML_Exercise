@@ -1,12 +1,13 @@
 <script setup>
 const props = defineProps({
-  text: {
+  content: {
     type: String,
-    required: true,
+    default: '',
   },
 })
 </script>
 
 <template>
-  <div>{{ props.text }}</div>
+  <p>nihao</p>
+  <div>{{ props.content }}</div>
 </template>
