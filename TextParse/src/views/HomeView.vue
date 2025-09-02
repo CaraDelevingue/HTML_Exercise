@@ -13,6 +13,7 @@ const msgs = ref([
 <template>
   <main class="main">
     <div class="history">
+      <p>历史记录：</p>
       <ul v-for="(msg, index) in msgs" :key="index">
         <AnalysisHistory :msg="msg" />
       </ul>

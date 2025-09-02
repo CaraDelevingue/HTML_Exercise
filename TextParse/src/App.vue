@@ -5,11 +5,8 @@ import { RouterView } from 'vue-router'
 <template>
   <div class="app">
     <header class="header">
-      <h1>You did it!</h1>
-      <p>
-        Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-        documentation
-      </p>
+      <h1>Text Parse</h1>
+      <p>请输入一段不少于十个字的语段或者文件，我会帮你提取出其中的关键字！</p>
     </header>
 
     <main class="app-main">
@@ -17,7 +14,7 @@ import { RouterView } from 'vue-router'
     </main>
 
     <footer>
-      <p>这是网页页脚!</p>
+      <p>Text Parse!</p>
     </footer>
   </div>
 </template>
