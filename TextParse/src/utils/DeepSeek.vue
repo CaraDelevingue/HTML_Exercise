@@ -18,9 +18,10 @@ const error = ref('')
 watch(
   () => props.textContent,
   (newText) => {
-    if (newText && newText.trim().length > 10) {
-      extractKeywords(newText)
-    }
+    // if (newText && newText.trim().length > 10) {
+    //   extractKeywords(newText)
+    // }
+    if (isLoading.value) extractKeywords(newText)
   },
 )
 

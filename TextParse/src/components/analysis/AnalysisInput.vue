@@ -2,6 +2,7 @@
 import AnalysisButton from '../analysisbuttons/AnalysisButton.vue'
 import TextInput from '../analysisforms/TextInput.vue'
 import { ref } from 'vue'
+import UploadFile from '../upload/UploadFile.vue'
 
 const emit = defineEmits(['update:content'])
 defineProps({
@@ -20,7 +21,7 @@ const handleAnalysis = () => {
 
 <template>
   <div class="file">
-    <p>file</p>
+    <UploadFile v-model:text="text" />
   </div>
   <div class="textinput">
     <TextInput v-model="text" class="textarea" />
@@ -36,6 +37,8 @@ const handleAnalysis = () => {
 .file {
   flex: 0 0 20%;
   border-bottom: 5px solid #f9f9f9;
+  display: flex;
+  flex-direction: row;
 }
 .textinput {
   flex: 1;
