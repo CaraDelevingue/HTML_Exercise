@@ -7,7 +7,7 @@ const deepSeekApi = axios.create({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${import.meta.env.VITE_DEEPSEEK_API_KEY}`,
   },
-  timeout: 10000,
+  timeout: 120000,
 })
 
 // 定义发送消息的函数

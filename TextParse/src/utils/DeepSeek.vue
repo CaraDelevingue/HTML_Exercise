@@ -18,10 +18,10 @@ const error = ref('')
 watch(
   () => props.textContent,
   (newText) => {
-    // if (newText && newText.trim().length > 10) {
-    //   extractKeywords(newText)
-    // }
-    if (isLoading.value) extractKeywords(newText)
+    if (newText && newText.trim().length > 5) {
+      extractKeywords(newText)
+    }
+    newText
   },
 )
 
@@ -46,11 +46,11 @@ const extractKeywords = async (text) => {
       { role: 'user', content: prompt },
     ])
     const rawKeywords = response.choices[0].message.content
-    const cleanedKeywords = clean(rawKeywords)
-    emit('extracted', cleanedKeywords)
+    keywords.value = clean(rawKeywords)
+    emit('extracted', keywords.value)
     console.log('✅ 请求成功：数据已成功获取并处理')
   } catch (err) {
-    error.value.err.message
+    error.value = err.message
     emit('error', err.message)
     console.error('关键词提取失败:', err) // 添加日志便于调试
   } finally {
@@ -72,5 +72,7 @@ const clean = (rawText) => {
 </script>
 
 <template>
-  <p>开局我还是一只小小d啊</p>
+  <div v-if="isLoading">
+    <p>正在提取关键字，请稍后...</p>
+  </div>
 </template>

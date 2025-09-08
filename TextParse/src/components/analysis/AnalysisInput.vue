@@ -2,9 +2,11 @@
 import AnalysisButton from '../analysisbuttons/AnalysisButton.vue'
 import TextInput from '../analysisforms/TextInput.vue'
 import { ref } from 'vue'
-import UploadFile from '../upload/UploadFile.vue'
+import uploadFile from '../upload/uploadFile.vue'
+import { processFileStateStore } from '../../stores/counter'
 
 const emit = defineEmits(['update:content'])
+const state = processFileStateStore()
 defineProps({
   content: {
     type: String,
@@ -13,22 +15,27 @@ defineProps({
 })
 
 const text = ref('')
+const clearText = () => {
+  text.value = ''
+}
 
 const handleAnalysis = () => {
+  state.active()
   emit('update:content', text.value)
+  clearText()
 }
 </script>
 
 <template>
   <div class="file">
-    <UploadFile v-model:text="text" />
+    <uploadFile v-model:text="text" />
   </div>
   <div class="textinput">
     <TextInput v-model="text" class="textarea" />
   </div>
   <div class="button">
     <div class="analysis-button">
-      <AnalysisButton @click="handleAnalysis">关键字提取</AnalysisButton>
+      <AnalysisButton :disabled="!text || state.state" @click="handleAnalysis" />
     </div>
   </div>
 </template>
@@ -39,16 +46,21 @@ const handleAnalysis = () => {
   border-bottom: 5px solid #f9f9f9;
   display: flex;
   flex-direction: row;
+  padding-left: 3%;
+  gap: 30px;
 }
 .textinput {
   flex: 1;
   min-height: 0;
   width: 100%;
   padding: 10px;
+  padding-left: 3%;
+  padding-right: 3%;
   display: flex;
 }
 .button {
   flex: 0 0 15%;
   border-top: 5px solid #f9f9f9;
+  padding-left: 3%;
 }
 </style>

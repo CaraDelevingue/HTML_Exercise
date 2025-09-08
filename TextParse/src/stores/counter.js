@@ -10,3 +10,17 @@ export const useCounterStore = defineStore('counter', () => {
 
   return { count, doubleCount, increment }
 })
+
+export const processFileStateStore = defineStore('processState', {
+  state: () => ({
+    state: false,
+  }),
+  actions: {
+    active() {
+      this.state = true
+    },
+    deactive() {
+      this.state = false
+    },
+  },
+})

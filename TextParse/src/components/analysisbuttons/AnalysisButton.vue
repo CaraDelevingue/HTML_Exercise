@@ -1,4 +1,10 @@
 <script setup>
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: true,
+  },
+})
 const emit = defineEmits(['click'])
 
 function handleclick(event) {
@@ -6,7 +12,7 @@ function handleclick(event) {
 }
 </script>
 <template>
-  <button @click="handleclick" class="my-btn">
+  <button :disabled="disabled" @click="handleclick" class="my-btn">
     <slot>关键字提取</slot>
   </button>
 </template>
