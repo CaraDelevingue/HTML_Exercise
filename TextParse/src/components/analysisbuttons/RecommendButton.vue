@@ -13,7 +13,7 @@ function handleclick(event) {
 </script>
 <template>
   <button :disabled="disabled" @click="handleclick" class="my-btn">
-    <slot>关键字提取</slot>
+    <slot>获取摘要</slot>
   </button>
 </template>
 

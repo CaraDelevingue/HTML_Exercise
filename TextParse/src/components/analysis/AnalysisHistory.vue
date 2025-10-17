@@ -5,6 +5,7 @@ const props = defineProps({
     default: null,
   },
 })
+
 const date = new Date(props.record.id)
 const formattedTime = date.toLocaleString()
 </script>
@@ -18,6 +19,8 @@ const formattedTime = date.toLocaleString()
       <p>时间：{{ formattedTime }}</p>
     </div>
   </div>
+  <div></div>
+  <div></div>
 </template>
 
 <style scoped>

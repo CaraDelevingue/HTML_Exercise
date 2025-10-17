@@ -1,6 +1,9 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch } from 'vue'
 import { sendMessage } from './DeepSeek'
+import { processIsLoadingState } from '../stores/counter'
+
+const isLoading = processIsLoadingState()
 
 const props = defineProps({
   textContent: {
@@ -12,7 +15,6 @@ const props = defineProps({
 const emit = defineEmits(['extracted', 'error'])
 
 const keywords = ref('')
-const isLoading = ref(false)
 const error = ref('')
 
 watch(
@@ -26,7 +28,7 @@ watch(
 )
 
 const extractKeywords = async (text) => {
-  isLoading.value = true
+  isLoading.active()
   error.value = ''
   keywords.value = ''
   try {
@@ -54,7 +56,7 @@ const extractKeywords = async (text) => {
     emit('error', err.message)
     console.error('关键词提取失败:', err) // 添加日志便于调试
   } finally {
-    isLoading.value = false
+    isLoading.deactive()
   }
 }
 
@@ -72,7 +74,5 @@ const clean = (rawText) => {
 </script>
 
 <template>
-  <div v-if="isLoading">
-    <p>正在提取关键字，请稍后...</p>
-  </div>
+  <div></div>
 </template>
